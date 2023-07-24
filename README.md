@@ -1,3 +1,9 @@
+## Samik
+- My custom architecture
+- It has its own instruction set, among other things
+- Currently supported via VM, but I will eventually make the computer and write an Arduino flasher program
+
+
 - `<reg>` - (A,B,C,D,E,X or L)
 - `<mem>` - memory address
 - `<vid-addr>` - video memory address
