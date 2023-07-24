@@ -54,9 +54,9 @@ Five-bit opcode | Instruction + params         | Explanation
 
 01101 cmp <reg>,<reg> - examines the equality between the p1 & p2. Places result in L, for jump commands.
 
-01111 stor <reg>,<num> - stors p2 in p1
+01111 stor <reg>,<mem> - stors p2 in p1
 
-11000 vid <reg> - displays p1 in the video adaptor
+11000 vid <reg>||<mem> - displays p1 in the video adaptor
 ```
 ### Jumps
 - Check out `L`, decides what to do based on its value

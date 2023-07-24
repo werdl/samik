@@ -1,20 +1,40 @@
-import interpret,textwrap
-source=interpret.testgo()
+import textwrap,sys,math
 
-source=source.replace("\n","").replace(" ","")
+with open(sys.argv[1],"rb") as source:
+    source=source.read().decode('ascii').replace("\n","")
 
 class Computer():
     def __init__(self,source):
         self.mem={}
         self.inst=[]
         self.inst=textwrap.wrap(source,17)
-        for x in self.inst:
-            print(x)
         for x in range(64):
             i=bin(x)[2:].zfill(6)
             self.mem[str(i)]="00000000"
         for instruction in self.inst:
             self.process(instruction)
+        print("Printing changed memory adresses:")
+        for key,val in self.mem.items():
+            if val!="00000000":
+                tp=""
+                match key:
+                    case "000001":
+                        tp="A"
+                    case "000010":
+                        tp="B"
+                    case "000011":
+                        tp="C"
+                    case "000100":
+                        tp="D"
+                    case "000101":
+                        tp="E"
+                    case "000110":
+                        tp="X"
+                    case "000111":
+                        tp="L"
+                    case _:
+                        tp=key
+                print(f"Address {tp}: {val}")
     def bincalc(self,op,p1,p2):
         s1=int(self.mem[p1],2)
         s2=int(self.mem[p2],2)
@@ -28,15 +48,19 @@ class Computer():
             case "*":
                 decres=s1*s2
             case "/":
-                decres=s1/s2
+                decres=math.floor(s1/s2)
             case "&":
                 decres=s1&s2
             case "|":
                 decres=s1|s2
             case "^":
                 decres=s1^s2
-                
-        return str(bin(decres)).replace("b","").zfill(6)
+        x=str(bin(decres)).replace("b","")
+        if len(x)==7:
+            return x[1:]
+        else:
+            return x.zfill(6)
+        # return str(bin(decres)).replace("b","").zfill(6)
     
     def process(self,inst):
         
@@ -68,7 +92,6 @@ class Computer():
             
             case "11000": # vid
                 print(int(self.mem[p1],2))
-
             case "01010": # and
                 self.mem[x]=self.bincalc("&",p1,p2)
             case "01011": # or

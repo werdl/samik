@@ -1,4 +1,4 @@
-import re
+import re,sys,struct
 class SyntaxError(Exception):
     pass
 
@@ -109,12 +109,12 @@ class Converter():
 
             case "stor":
                 self.machine+="01111"
-                self.machine+=self.reg(p1)
+                self.machine+=self.RegOrMem(p1)
                 self.machine+=self.num(p2)
 
             case "vid":
                 self.machine+="11000"
-                self.machine+=self.reg(p1)
+                self.machine+=self.RegOrMem(p1)
                 self.machine+=self.none()
             
             case "mov":
@@ -123,16 +123,15 @@ class Converter():
                 self.machine+=self.RegOrMem(p2)
             case _:
                 raise SyntaxError(f"Invalid opcode {op}")
-        self.machine+="\n"
 
 
 mine= \
-"""stor A,45
-vid A
-inv A
-vid A"""
-test=Converter(mine.split("\n"))
+""""""
+with open(sys.argv[1]) as file:
+    mine=file.read()
+    test=Converter(mine.split("\n"))
 def testgo():
     return test.go()
 if __name__=="__main__":
-    print(testgo())
+    with open(sys.argv[1].split(".")[0]+".samik","wb") as f:
+        f.write(testgo().encode())
